@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Employees</title>
+
+</head>
+
+<body>
+
+    <h1>New Request Registration</h1>
+
+    <label for="amount">Amount</label>
+    <input name="amount" id="amountInput" type="number" placeholder="$"><br><br>
+
+    <label for="reason">Reason</label>
+    <input name="reason" id="reasonInput" type="text" placeholder="Reason"><br><br>
+
+    <label for="status">Status</label>
+    <input name="status" id="statusInput" type="text" placeholder="status"><br><br>
+
+
+    <button onclick="addRequest()">Add Request</button>
+
+
+
+
+
+
+
+</body>
+<script>
+    const amountInput = document.getElementById("amountInput")
+    const reasonInput = document.getElementById("reasonInput")
+    const statusInput = document.getElementById("statusInput")
+    const rr_e_id = localStorage.getItem("rr_e_id");
+
+    async function addRequest() {
+        const r = {
+            rrId: 0,
+            rrAmount: Number(amountInput.value),
+            rrReason: reasonInput.value,
+            rrStatus: statusInput.value,
+            rrEId: rr_e_id,
+        }
+        const config = {
+            method: "POST",
+            headers: {
+                'Content-Type': "application/json"
+            },
+            body: JSON.stringify(r)
+        }
+        const response = await fetch("http://127.0.0.1:5000/requests", config)
+        if (response.status === 201) {
+            alert(`The request was successfully added`)
+        } else {
+            alert("Something went wrong :(")
+        }
+    }
+</script>
+
+</html>

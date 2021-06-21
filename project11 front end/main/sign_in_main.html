@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Signin</title>
+
+</head>
+
+<body>
+
+    <input id="floatingUsername" type="text" placeholder="The Scarlet Letter">
+    <input id="floatingPassword" type="text" placeholder="The Scarlet Letter">
+    <button id="helloBtn">Hello!!!!</button>
+
+
+    <h5>Requests</h5>
+    <table>
+        <thead>
+            <th>Id</th>
+            <th>Amount</th>
+            <th>Reason</th>
+            <th>Status</th>
+        </thead>
+        <tbody id="requestTableBody">
+        </tbody>
+
+
+    </table>
+
+</body>
+
+<script>
+    const usernameInput = document.getElementById("floatingUsername")
+    const passwordInput = document.getElementById("floatingPassword")
+
+    async function signin() {
+        console.log("hello")
+        const response = await fetch(`http://127.0.0.1:5000/logging/username/${usernameInput.value}/password/${passwordInput.value}`)
+
+        if (response.status === 400 || response.status === 404) {
+            return alert(" Your username or password does not match.")
+        } else {
+            data = await response.json()
+            if ("mId" in data) {
+                alert(' Dear Maneger  ' + data.mName + '   welcome')
+            } else {
+                alert(`Dear Employee ${data.eName} wlcome`)
+                get_all_requests_by_e_id(data.eId)
+                const registerBtn = document.getElementById("registerBtn")
+                helloBtn.addEventListener("click", addRequest(data.eId))
+            }
+        }
+
+    }
+    const helloBtn = document.getElementById("helloBtn")
+    helloBtn.addEventListener("click", signin)
+
+    async function get_all_requests_by_e_id(rr_e_id) {
+        const response = await fetch(`http://127.0.0.1:5000/requests/${rr_e_id}`)
+        if (response.status === 404) {
+            return alert(" There is not any request for you.")
+        } else {
+            const requests = await response.json()
+            let innerRows = ""
+            for (let r of requests) {
+                innerRows += `<tr>
+               <td>${r.rrId}</td>
+               <td>${r.rrAmount}</td>
+               <td>${r.rrReason}</td>
+               <td>${r.rrStatus}</td>
+               </tr>`
+            }
+            requestTableBody.innerHTML = innerRows
+        }
+    }
+</script>
+
+</html>

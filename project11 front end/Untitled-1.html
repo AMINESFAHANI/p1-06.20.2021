@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>JavaScript</title>
+</head>
+
+<body>
+    <button onclick="getThatPokemon()">Get Pokemon</button>
+    <button onclick="getThatPokemon2()">Get Pokemon2</button>
+
+</body>
+<script>
+    async function getThatPokemon() {
+
+        // const config = {
+        // method: "GET",
+        // headers: {
+        // 'Content-Type': "application/json"
+        // },
+
+        // mode: "no-cors"
+        // }
+        const httpResponse = await fetch("http://127.0.0.1:5000/hello");
+        console.log(httpResponse);
+        console.log(httpResponse.status)
+        body = await httpResponse.json();
+        console.log(body);
+        if ("eId" in body) {
+            console.log(body.eId, Number(body.eUsername))
+            alert("hello" + body[2])
+        }
+        console.log(body["eName"])
+        localStorage.setItem("lastname", "Smith");
+        location.replace("file:///C:/Users/amin/Desktop/day01/01/project11%20front%20end/sign_in.html")
+    };
+</script>
+
+</html>
